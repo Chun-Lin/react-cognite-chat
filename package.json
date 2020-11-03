@@ -41,16 +41,13 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --single-quote --no-semi --trailing-comma es5 --tab-width 2 --write",
-      "git add"
+      "prettier --single-quote --no-semi --trailing-comma es5 --tab-width 2 --write"
     ],
     "*.{png,jpeg,jpg,gif}": [
-      "imagemin-lint-staged",
-      "git add"
+      "imagemin-lint-staged"
     ],
     "src/assets/*.svg": [
-      "svgo --disable=removeViewBox --enable=prefixIds",
-      "git add"
+      "svgo --disable=removeViewBox --enable=prefixIds"
     ]
   },
   "devDependencies": {
