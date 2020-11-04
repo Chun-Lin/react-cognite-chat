@@ -9,6 +9,8 @@ import ChatroomHeaderContent from 'components/ChatroomHeaderContent'
 import Input from 'components/shared/Input'
 import Message from 'components/Message'
 import { Button } from 'components/shared/Button'
+import { useSelector } from 'react-redux'
+import { selectUser } from 'redux/user/userRedux'
 
 const MessngerContainter = styled.div`
   display: grid;
@@ -69,11 +71,13 @@ const MessageInputContainer = styled.div`
 `
 
 const Messenger = () => {
+  const { uid, photoURL, email, displayName } = useSelector(selectUser)
+
   return (
     <MessngerContainter>
       <UserPanel>
         <Avatar
-          src="http://lorempixel.com/640/480"
+          src={photoURL}
           alt=""
           width="25px"
           height="25px"

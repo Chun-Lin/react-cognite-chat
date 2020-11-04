@@ -13,8 +13,6 @@ function App() {
 
   useEffect(() => {
     auth.onAuthStateChanged(({ uid, photoURL, email, displayName }) => {
-      console.log('uid', uid)
-      console.log('photo', photoURL)
       if (uid) {
         dispatch(
           login({
@@ -28,7 +26,7 @@ function App() {
         dispatch(logout())
       }
     })
-  }, [])
+  }, [dispatch])
 
   return <div className="App">{user ? <Messenger /> : <Login />}</div>
 }
