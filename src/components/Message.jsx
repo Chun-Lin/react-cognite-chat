@@ -25,18 +25,20 @@ const MessageContainer = styled.div`
   }
 `
 
-const Message = () => {
+const Message = ({ message, timeStamp, photoURL }) => {
   return (
     <MessageContainer>
       <Avatar
-        src="http://lorempixel.com/640/480"
+        src={photoURL}
         alt=""
         width="30px"
         height="30px"
         borderRadius="100px"
       />
-      <p>This is a Message</p>
-      <small>timestamp</small>
+      <p>{message}</p>
+      <small>
+        {timeStamp ? new Date(timeStamp.toDate()).toLocaleString() : null}
+      </small>
     </MessageContainer>
   )
 }

@@ -38,7 +38,6 @@ const LastestMsg = styled.p`
 `
 
 const ChatroomList = ({ photoURL, chatroomName, friendUid, userUid }) => {
-  console.log('LOG: ChatroomList -> chatroomName', chatroomName)
   const dispatch = useDispatch()
 
   const selectedChatRoom = () => {

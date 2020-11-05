@@ -11,7 +11,7 @@ import Message from 'components/Message'
 import { Button } from 'components/shared/Button'
 import { useSelector } from 'react-redux'
 import { selectUser } from 'redux/user/userRedux'
-import { db } from 'firebaseSetting'
+import firebase, { db } from 'firebaseSetting'
 import { selectChatroom } from 'redux/chatroom/chatroomRedux'
 
 const MessngerContainter = styled.div`
@@ -78,6 +78,8 @@ const Messenger = () => {
   const chatroom = useSelector(selectChatroom)
   const [friends, setFriends] = useState([])
   const [chatrooms, setChatrooms] = useState([])
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState([])
 
   useEffect(() => {
     db.collection('users')
@@ -100,6 +102,40 @@ const Messenger = () => {
         setChatrooms([...chatroomsAll])
       })
   }, [user.uid])
+
+  useEffect(() => {
+    if (chatroom) {
+      db.collection('chatrooms')
+        .doc(chatroom.friendUid)
+        .collection('messages')
+        .orderBy('timestamp', 'desc')
+        .onSnapshot((querySnapshot) => {
+          let messagesAll = []
+          querySnapshot.forEach((doc) =>
+            messagesAll.push({ id: doc.id, data: doc.data() })
+          )
+          setMessages([...messagesAll])
+        })
+    }
+  }, [chatroom])
+
+  const onChangeHandler = (e) => {
+    e.preventDefault()
+    setInput(e.target.value)
+  }
+
+  const sendButtonClickHandler = () => {
+    db.collection('chatrooms')
+      .doc(chatroom?.friendUid)
+      .collection('messages')
+      .doc()
+      .set({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        message: input,
+      })
+
+    setInput('')
+  }
 
   return (
     <MessngerContainter>
@@ -130,7 +166,7 @@ const Messenger = () => {
         {chatrooms.length > 0
           ? chatrooms.map((chatroom) => (
               <ChatroomList
-                key={chatroom?.name}
+                key={chatroom?.photoURL}
                 photoURL={chatroom?.photoURL}
                 chatroomName={chatroom?.roomName}
                 friendUid={
@@ -150,24 +186,25 @@ const Messenger = () => {
         ) : null}
       </ChatroomHeader>
       <Chatroom>
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Message />
+        {messages.length > 0
+          ? messages.map((message) => {
+              return (
+                <Message
+                  message={message.data.message}
+                  timeStamp={message.data.timestamp}
+                  photoURL={user.photoURL}
+                />
+              )
+            })
+          : null}
       </Chatroom>
       <MessageInputContainer>
-        <Input width="100%" height="30px" />
+        <Input
+          width="100%"
+          height="30px"
+          onChange={onChangeHandler}
+          value={input}
+        />
         <Button
           width="60px"
           height="30px"
@@ -175,6 +212,7 @@ const Messenger = () => {
           borderRadius="20px"
           border="none"
           backgroundColor="orange"
+          onClick={sendButtonClickHandler}
         >
           Send
         </Button>
