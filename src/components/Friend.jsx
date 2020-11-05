@@ -1,7 +1,10 @@
-import { db } from 'firebaseSetting'
 import React from 'react'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+
+import { db } from 'firebaseSetting'
 import { Avatar } from './shared/Avatar'
+import { join } from 'redux/chatroom/chatroomRedux'
 
 const FriendContainer = styled.div`
   display: flex;
@@ -15,9 +18,33 @@ const FriendContainer = styled.div`
   }
 `
 
-const Friend = ({ photoURL, name }) => {
+const Friend = ({ photoURL, name, friendUid, userUid }) => {
+  const dispatch = useDispatch()
+
+  const addChatRoom = () => {
+    dispatch(
+      join({
+        chatroomName: name,
+        photoURL,
+        friendUid,
+        userUid,
+      })
+    )
+
+    db.collection('chatrooms')
+      .doc(friendUid)
+      .set(
+        {
+          roomName: name,
+          users: [friendUid, userUid],
+          photoURL,
+        },
+        { merge: true }
+      )
+  }
+
   return (
-    <FriendContainer onClick={() => {}}>
+    <FriendContainer onClick={addChatRoom}>
       <Avatar
         src={photoURL}
         alt=""

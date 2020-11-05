@@ -1,4 +1,6 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { join } from 'redux/chatroom/chatroomRedux'
 import styled from 'styled-components/macro'
 import { Avatar } from './shared/Avatar'
 
@@ -35,18 +37,32 @@ const LastestMsg = styled.p`
   margin: 0;
 `
 
-const ChatroomList = () => {
+const ChatroomList = ({ photoURL, chatroomName, friendUid, userUid }) => {
+  console.log('LOG: ChatroomList -> chatroomName', chatroomName)
+  const dispatch = useDispatch()
+
+  const selectedChatRoom = () => {
+    dispatch(
+      join({
+        chatroomName,
+        photoURL,
+        friendUid,
+        userUid,
+      })
+    )
+  }
+
   return (
-    <ListContainer>
+    <ListContainer onClick={selectedChatRoom}>
       <Avatar
-        src="http://lorempixel.com/640/480"
+        src={photoURL}
         alt=""
         width="40px"
         height="40px"
         borderRadius="100px"
       />
       <DialogWrapper>
-        <ChatroomName>Chat Test</ChatroomName>
+        <ChatroomName>{chatroomName}</ChatroomName>
         <LastestMsg>This is a test</LastestMsg>
       </DialogWrapper>
     </ListContainer>

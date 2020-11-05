@@ -16,17 +16,17 @@ const ChatroomName = styled.h3`
   margin-left: 10px;
 `
 
-const ChatroomHeaderContent = () => {
+const ChatroomHeaderContent = ({ photoURL, chatroomName }) => {
   return (
     <HeaderContainer>
       <Avatar
-        src="http://lorempixel.com/640/480"
+        src={photoURL}
         alt=""
         width="30px"
         height="30px"
         borderRadius="100px"
       />
-      <ChatroomName>Chatroom Name</ChatroomName>
+      <ChatroomName>{chatroomName}</ChatroomName>
     </HeaderContainer>
   )
 }

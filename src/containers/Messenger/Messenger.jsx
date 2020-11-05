@@ -12,6 +12,7 @@ import { Button } from 'components/shared/Button'
 import { useSelector } from 'react-redux'
 import { selectUser } from 'redux/user/userRedux'
 import { db } from 'firebaseSetting'
+import { selectChatroom } from 'redux/chatroom/chatroomRedux'
 
 const MessngerContainter = styled.div`
   display: grid;
@@ -55,6 +56,7 @@ const ChatroomListContainer = styled.div`
 
 const ChatroomHeader = styled.div`
   grid-area: chatroom-header;
+  background-color: #f3f3f3;
 `
 
 const Chatroom = styled.div`
@@ -72,25 +74,38 @@ const MessageInputContainer = styled.div`
 `
 
 const Messenger = () => {
-  const { uid, photoURL, email, displayName } = useSelector(selectUser)
+  const user = useSelector(selectUser)
+  const chatroom = useSelector(selectChatroom)
   const [friends, setFriends] = useState([])
+  const [chatrooms, setChatrooms] = useState([])
 
   useEffect(() => {
     db.collection('users')
-      .where('uid', '!=', uid)
+      .where('uid', '!=', user?.uid)
       .onSnapshot((querySnapshot) => {
         let friendsAll = []
         querySnapshot.forEach((doc) => friendsAll.push(doc.data()))
 
         setFriends([...friendsAll])
       })
-  }, [uid])
+  }, [user.uid])
+
+  useEffect(() => {
+    db.collection('chatrooms')
+      .where('users', 'array-contains', user?.uid)
+      .onSnapshot((querySnapshot) => {
+        let chatroomsAll = []
+        querySnapshot.forEach((doc) => chatroomsAll.push(doc.data()))
+
+        setChatrooms([...chatroomsAll])
+      })
+  }, [user.uid])
 
   return (
     <MessngerContainter>
       <UserPanel>
         <Avatar
-          src={photoURL}
+          src={user?.photoURL}
           alt=""
           width="25px"
           height="25px"
@@ -106,25 +121,33 @@ const Messenger = () => {
               key={friend.uid}
               photoURL={friend.photoURL}
               name={friend.name}
+              friendUid={friend.uid}
+              userUid={user.uid}
             />
           ))}
       </FriendList>
       <ChatroomListContainer>
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
-        <ChatroomList />
+        {chatrooms.length > 0
+          ? chatrooms.map((chatroom) => (
+              <ChatroomList
+                key={chatroom?.name}
+                photoURL={chatroom?.photoURL}
+                chatroomName={chatroom?.roomName}
+                friendUid={
+                  chatroom.users.filter((item) => item !== user.uid)[0]
+                }
+                userUid={user.uid}
+              />
+            ))
+          : null}
       </ChatroomListContainer>
       <ChatroomHeader>
-        <ChatroomHeaderContent />
+        {chatroom ? (
+          <ChatroomHeaderContent
+            photoURL={chatroom?.photoURL}
+            chatroomName={chatroom?.chatroomName}
+          />
+        ) : null}
       </ChatroomHeader>
       <Chatroom>
         <Message />
