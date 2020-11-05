@@ -1,3 +1,4 @@
+import { db } from 'firebaseSetting'
 import React from 'react'
 import styled from 'styled-components'
 import { Avatar } from './shared/Avatar'
@@ -14,17 +15,17 @@ const FriendContainer = styled.div`
   }
 `
 
-const Friend = () => {
+const Friend = ({ photoURL, name }) => {
   return (
-    <FriendContainer>
+    <FriendContainer onClick={() => {}}>
       <Avatar
-        src="http://lorempixel.com/640/480"
+        src={photoURL}
         alt=""
         width="40px"
         height="40px"
         borderRadius="100px"
       />
-      <span>Friend Name</span>
+      <span>{name}</span>
     </FriendContainer>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
 import { BiMessageSquareAdd } from 'react-icons/bi'
 
@@ -11,11 +11,12 @@ import Message from 'components/Message'
 import { Button } from 'components/shared/Button'
 import { useSelector } from 'react-redux'
 import { selectUser } from 'redux/user/userRedux'
+import { db } from 'firebaseSetting'
 
 const MessngerContainter = styled.div`
   display: grid;
   grid-template-columns: 300px auto;
-  grid-template-rows: 50px 80px calc(100vh - 210px) 80px;
+  grid-template-rows: 50px 100px calc(100vh - 230px) 80px;
   grid-template-areas:
     'user-panel chatroom-header'
     'friend-list chatroom'
@@ -72,6 +73,18 @@ const MessageInputContainer = styled.div`
 
 const Messenger = () => {
   const { uid, photoURL, email, displayName } = useSelector(selectUser)
+  const [friends, setFriends] = useState([])
+
+  useEffect(() => {
+    db.collection('users')
+      .where('uid', '!=', uid)
+      .onSnapshot((querySnapshot) => {
+        let friendsAll = []
+        querySnapshot.forEach((doc) => friendsAll.push(doc.data()))
+
+        setFriends([...friendsAll])
+      })
+  }, [uid])
 
   return (
     <MessngerContainter>
@@ -87,12 +100,14 @@ const Messenger = () => {
         <BiMessageSquareAdd size="25px" />
       </UserPanel>
       <FriendList>
-        <Friend />
-        <Friend />
-        <Friend />
-        <Friend />
-        <Friend />
-        <Friend />
+        {friends.length > 0 &&
+          friends.map((friend) => (
+            <Friend
+              key={friend.uid}
+              photoURL={friend.photoURL}
+              name={friend.name}
+            />
+          ))}
       </FriendList>
       <ChatroomListContainer>
         <ChatroomList />
