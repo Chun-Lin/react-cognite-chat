@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
+import isEqual from 'lodash.isequal'
 
 import { db } from 'firebaseSetting'
 import { Avatar } from './shared/Avatar'
@@ -21,26 +22,34 @@ const FriendContainer = styled.div`
 const Friend = ({ photoURL, name, friend, user }) => {
   const dispatch = useDispatch()
 
-  const addChatRoom = () => {
-    db.collection('chatrooms')
-      .add(
-        {
-          users: [friend, user],
-        },
-        { merge: true }
-      )
-      .then((docRef) => {
-        dispatch(
-          join({
-            chatroomId: docRef.id,
-            users: [friend, user],
-            chatroomName: friend.displayName,
-            photoURL: friend.photoURL,
-            // friendUid: friend.uid,
-            // userUid: user.uid,
-          })
-        )
+  const addChatRoom = async () => {
+    const querySnapshot = await db.collection('chatrooms').get()
+    let users = []
+    querySnapshot.forEach((doc) => users.push(doc.data()))
+
+    const isChatroomExist = users.some(
+      (chatroomUsers) =>
+        isEqual(chatroomUsers.users, [friend, user]) ||
+        isEqual(chatroomUsers.users, [user, friend])
+    )
+
+    if (isChatroomExist) return
+
+    const docRef = await db.collection('chatrooms').add(
+      {
+        users: [friend, user],
+      },
+      { merge: true }
+    )
+
+    dispatch(
+      join({
+        chatroomId: docRef.id,
+        users: [friend, user],
+        chatroomName: friend.displayName,
+        photoURL: friend.photoURL,
       })
+    )
   }
 
   return (

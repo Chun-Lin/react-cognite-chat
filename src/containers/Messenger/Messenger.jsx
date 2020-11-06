@@ -94,7 +94,10 @@ const Messenger = () => {
 
   useEffect(() => {
     db.collection('chatrooms')
-      // .where('users', 'array-contains', mainUser)
+      // TODO: filter the chatroom don't belong to the user
+      // .where('users', 'array-contains', {
+      //   ...mainUser,
+      // })
       .onSnapshot((querySnapshot) => {
         let chatroomsAll = []
         querySnapshot.forEach((doc) =>
