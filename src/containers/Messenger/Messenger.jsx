@@ -74,8 +74,8 @@ const MessageInputContainer = styled.div`
 `
 
 const Messenger = () => {
-  const user = useSelector(selectUser)
-  const chatroom = useSelector(selectChatroom)
+  const mainUser = useSelector(selectUser)
+  const selectedChatroom = useSelector(selectChatroom)
   const [friends, setFriends] = useState([])
   const [chatrooms, setChatrooms] = useState([])
   const [input, setInput] = useState('')
@@ -83,56 +83,61 @@ const Messenger = () => {
 
   useEffect(() => {
     db.collection('users')
-      .where('uid', '!=', user?.uid)
+      .where('uid', '!=', mainUser.uid)
       .onSnapshot((querySnapshot) => {
         let friendsAll = []
         querySnapshot.forEach((doc) => friendsAll.push(doc.data()))
 
         setFriends([...friendsAll])
       })
-  }, [user.uid])
+  }, [mainUser.uid])
 
   useEffect(() => {
     db.collection('chatrooms')
-      .where('users', 'array-contains', user?.uid)
+      // .where('users', 'array-contains', mainUser)
       .onSnapshot((querySnapshot) => {
         let chatroomsAll = []
-        querySnapshot.forEach((doc) => chatroomsAll.push(doc.data()))
+        querySnapshot.forEach((doc) =>
+          chatroomsAll.push({ id: doc.id, data: doc.data() })
+        )
 
         setChatrooms([...chatroomsAll])
       })
-  }, [user.uid])
+  }, [selectedChatroom, mainUser])
 
   useEffect(() => {
-    if (chatroom) {
+    if (selectedChatroom) {
       db.collection('chatrooms')
-        .doc(chatroom.friendUid)
+        .doc(selectedChatroom.chatroomId)
         .collection('messages')
         .orderBy('timestamp', 'desc')
-        .onSnapshot((querySnapshot) => {
-          let messagesAll = []
-          querySnapshot.forEach((doc) =>
-            messagesAll.push({ id: doc.id, data: doc.data() })
-          )
-          setMessages([...messagesAll])
-        })
+        .onSnapshot(
+          (querySnapshot) => {
+            let messagesAll = []
+            querySnapshot.forEach((doc) =>
+              messagesAll.push({ id: doc.id, data: doc.data() })
+            )
+            setMessages([...messagesAll])
+          },
+          (err) => console.log(err)
+        )
     }
-  }, [chatroom])
+  }, [selectedChatroom])
 
   const onChangeHandler = (e) => {
     e.preventDefault()
     setInput(e.target.value)
   }
 
-  const sendButtonClickHandler = () => {
-    if (chatroom) {
+  const sendButtonClickHandler = (e, mainUser) => {
+    if (selectedChatroom) {
       db.collection('chatrooms')
-        .doc(chatroom?.friendUid)
+        .doc(selectedChatroom.chatroomId)
         .collection('messages')
-        .doc()
-        .set({
+        .add({
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           message: input,
+          sender: mainUser,
         })
     }
 
@@ -143,7 +148,7 @@ const Messenger = () => {
     <MessngerContainter>
       <UserPanel>
         <Avatar
-          src={user?.photoURL}
+          src={mainUser?.photoURL}
           alt=""
           width="25px"
           height="25px"
@@ -155,35 +160,34 @@ const Messenger = () => {
       <FriendList>
         {friends.length > 0 &&
           friends.map((friend) => (
-            <Friend
-              key={friend.uid}
-              photoURL={friend.photoURL}
-              name={friend.name}
-              friendUid={friend.uid}
-              userUid={user.uid}
-            />
+            <Friend key={friend.uid} friend={friend} user={mainUser} />
           ))}
       </FriendList>
       <ChatroomListContainer>
         {chatrooms.length > 0
-          ? chatrooms.map((chatroom) => (
-              <ChatroomList
-                key={chatroom.photoURL}
-                photoURL={chatroom.photoURL}
-                chatroomName={chatroom.chatroomName}
-                friendUid={
-                  chatroom.users.filter((item) => item !== user.uid)[0]
-                }
-                userUid={user.uid}
-              />
-            ))
+          ? chatrooms.map((chatroom) => {
+              const friend = chatroom.data.users.filter(
+                (user) => user.uid !== mainUser.uid
+              )[0]
+
+              return (
+                <ChatroomList
+                  key={chatroom.id}
+                  chatroomId={chatroom.id}
+                  photoURL={friend.photoURL}
+                  chatroomName={friend.displayName}
+                  friend={friend}
+                  user={mainUser}
+                />
+              )
+            })
           : null}
       </ChatroomListContainer>
       <ChatroomHeader>
-        {chatroom ? (
+        {selectedChatroom ? (
           <ChatroomHeaderContent
-            photoURL={chatroom.photoURL}
-            chatroomName={chatroom.chatroomName}
+            photoURL={selectedChatroom.photoURL}
+            chatroomName={selectedChatroom.chatroomName}
           />
         ) : null}
       </ChatroomHeader>
@@ -192,9 +196,10 @@ const Messenger = () => {
           ? messages.map((message) => {
               return (
                 <Message
+                  key={message.id}
                   message={message.data.message}
                   timeStamp={message.data.timestamp}
-                  photoURL={user.photoURL}
+                  photoURL={message.data.sender?.photoURL}
                 />
               )
             })
@@ -214,7 +219,7 @@ const Messenger = () => {
           borderRadius="20px"
           border="none"
           backgroundColor="orange"
-          onClick={sendButtonClickHandler}
+          onClick={(e) => sendButtonClickHandler(e, mainUser)}
         >
           Send
         </Button>

@@ -18,41 +18,41 @@ const FriendContainer = styled.div`
   }
 `
 
-const Friend = ({ photoURL, name, friendUid, userUid }) => {
+const Friend = ({ photoURL, name, friend, user }) => {
   const dispatch = useDispatch()
 
   const addChatRoom = () => {
-    dispatch(
-      join({
-        chatroomName: name,
-        photoURL,
-        friendUid,
-        userUid,
-      })
-    )
-
     db.collection('chatrooms')
-      .doc(friendUid)
-      .set(
+      .add(
         {
-          chatroomName: name,
-          users: [friendUid, userUid],
-          photoURL,
+          users: [friend, user],
         },
         { merge: true }
       )
+      .then((docRef) => {
+        dispatch(
+          join({
+            chatroomId: docRef.id,
+            users: [friend, user],
+            chatroomName: friend.displayName,
+            photoURL: friend.photoURL,
+            // friendUid: friend.uid,
+            // userUid: user.uid,
+          })
+        )
+      })
   }
 
   return (
     <FriendContainer onClick={addChatRoom}>
       <Avatar
-        src={photoURL}
+        src={friend.photoURL}
         alt=""
         width="40px"
         height="40px"
         borderRadius="100px"
       />
-      <span>{name}</span>
+      <span>{friend.displayName}</span>
     </FriendContainer>
   )
 }

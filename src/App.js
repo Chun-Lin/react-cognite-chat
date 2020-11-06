@@ -24,7 +24,7 @@ function App() {
         )
         db.collection('users').doc(uid).set(
           {
-            name: displayName,
+            displayName,
             uid,
             photoURL,
             email,
