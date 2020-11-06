@@ -35,7 +35,7 @@ const Friend = ({ photoURL, name, friendUid, userUid }) => {
       .doc(friendUid)
       .set(
         {
-          roomName: name,
+          chatroomName: name,
           users: [friendUid, userUid],
           photoURL,
         },

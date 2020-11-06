@@ -125,14 +125,16 @@ const Messenger = () => {
   }
 
   const sendButtonClickHandler = () => {
-    db.collection('chatrooms')
-      .doc(chatroom?.friendUid)
-      .collection('messages')
-      .doc()
-      .set({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        message: input,
-      })
+    if (chatroom) {
+      db.collection('chatrooms')
+        .doc(chatroom?.friendUid)
+        .collection('messages')
+        .doc()
+        .set({
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          message: input,
+        })
+    }
 
     setInput('')
   }
@@ -166,9 +168,9 @@ const Messenger = () => {
         {chatrooms.length > 0
           ? chatrooms.map((chatroom) => (
               <ChatroomList
-                key={chatroom?.photoURL}
-                photoURL={chatroom?.photoURL}
-                chatroomName={chatroom?.roomName}
+                key={chatroom.photoURL}
+                photoURL={chatroom.photoURL}
+                chatroomName={chatroom.chatroomName}
                 friendUid={
                   chatroom.users.filter((item) => item !== user.uid)[0]
                 }
@@ -180,8 +182,8 @@ const Messenger = () => {
       <ChatroomHeader>
         {chatroom ? (
           <ChatroomHeaderContent
-            photoURL={chatroom?.photoURL}
-            chatroomName={chatroom?.chatroomName}
+            photoURL={chatroom.photoURL}
+            chatroomName={chatroom.chatroomName}
           />
         ) : null}
       </ChatroomHeader>
