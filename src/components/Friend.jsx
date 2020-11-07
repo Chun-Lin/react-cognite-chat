@@ -6,6 +6,7 @@ import isEqual from 'lodash.isequal'
 import { db } from 'firebaseSetting'
 import { Avatar } from './shared/Avatar'
 import { join } from 'redux/chatroom/chatroomRedux'
+import { login } from 'redux/user/userRedux'
 
 const FriendContainer = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ const Friend = ({ photoURL, name, friend, user }) => {
 
     if (isChatroomExist) return
 
-    const docRef = await db.collection('chatrooms').add(
+    const chatroomDocRef = await db.collection('chatrooms').add(
       {
         users: [friend, user],
       },
@@ -44,12 +45,35 @@ const Friend = ({ photoURL, name, friend, user }) => {
 
     dispatch(
       join({
-        chatroomId: docRef.id,
+        chatroomId: chatroomDocRef.id,
         users: [friend, user],
         chatroomName: friend.displayName,
         photoURL: friend.photoURL,
       })
     )
+    const userDoc = await db.collection('users').doc(user.uid).get()
+    db.collection('users')
+      .doc(user.uid)
+      .set(
+        {
+          chatrooms: userDoc.data().chatrooms
+            ? [...userDoc.data().chatrooms, chatroomDocRef.id]
+            : [chatroomDocRef.id],
+        },
+        { merge: true }
+      )
+
+    const friendDoc = await db.collection('users').doc(friend.uid).get()
+    db.collection('users')
+      .doc(friend.uid)
+      .set(
+        {
+          chatrooms: friendDoc.data().chatrooms
+            ? [...friendDoc.data().chatrooms, chatroomDocRef.id]
+            : [chatroomDocRef.id],
+        },
+        { merge: true }
+      )
   }
 
   return (
