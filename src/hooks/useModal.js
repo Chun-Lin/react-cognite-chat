@@ -40,9 +40,7 @@ const ModalCover = styled.div`
   bottom: 0;
   z-index: 900;
   background: ${(props) =>
-    props.isCoverShown
-      ? props.theme.modal.cover.backgroundColor
-      : 'transparent'};
+    props.isCoverShown ? 'rgba(0,0,0,0.2)' : 'transparent'};
   ${(props) => props.coverStyles};
 `
 

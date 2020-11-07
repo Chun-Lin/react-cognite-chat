@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components/macro'
-import { BiMessageSquareAdd } from 'react-icons/bi'
 
-import { Avatar } from 'components/shared/Avatar'
 import Friend from 'components/Friend'
 import ChatroomList from 'components/ChatroomList'
 import ChatroomHeaderContent from 'components/ChatroomHeaderContent'
@@ -13,6 +11,7 @@ import { useSelector } from 'react-redux'
 import { selectUser } from 'redux/user/userRedux'
 import firebase, { db } from 'firebaseSetting'
 import { selectChatroom } from 'redux/chatroom/chatroomRedux'
+import UserPanelContent from 'components/UserPanelContent'
 
 const MessngerContainter = styled.div`
   display: grid;
@@ -28,16 +27,6 @@ const MessngerContainter = styled.div`
 
 const UserPanel = styled.div`
   grid-area: user-panel;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #faf3ee;
-
-  h1 {
-    padding: 0;
-    margin: 0;
-    font-size: 25px;
-  }
 `
 
 const FriendList = styled.div`
@@ -150,15 +139,7 @@ const Messenger = () => {
   return (
     <MessngerContainter>
       <UserPanel>
-        <Avatar
-          src={mainUser?.photoURL}
-          alt=""
-          width="25px"
-          height="25px"
-          borderRadius="100px"
-        />
-        <h1>Cognite Chat</h1>
-        <BiMessageSquareAdd size="25px" />
+        <UserPanelContent user={mainUser} />
       </UserPanel>
       <FriendList>
         {friends.length > 0 &&
