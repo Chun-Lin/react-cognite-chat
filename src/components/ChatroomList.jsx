@@ -37,16 +37,16 @@ const LastestMsg = styled.p`
   margin: 0;
 `
 
-const ChatroomList = ({ photoURL, chatroomId, chatroomName, friend, user }) => {
+const ChatroomList = ({ photoURL, chatroomId, chatroomName, attendants }) => {
   const dispatch = useDispatch()
 
   const selectedChatRoom = () => {
     dispatch(
       join({
         chatroomId,
-        users: [friend, user],
-        chatroomName: friend.displayName,
-        photoURL: friend.photoURL,
+        users: attendants,
+        chatroomName,
+        photoURL,
       })
     )
   }

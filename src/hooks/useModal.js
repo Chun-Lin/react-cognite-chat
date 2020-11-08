@@ -23,7 +23,7 @@ export const ModalPortal = memo(({ children }) => {
   useEffect(() => {
     document.body.appendChild(modalRootEl)
 
-    return () => document.body.removeChild(modalRootEl)
+    // return () => document.body.removeChild(modalRootEl)
   })
 
   return ReactDOM.createPortal(

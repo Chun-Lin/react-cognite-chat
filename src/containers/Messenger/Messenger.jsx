@@ -139,7 +139,7 @@ const Messenger = () => {
   return (
     <MessngerContainter>
       <UserPanel>
-        <UserPanelContent user={mainUser} />
+        <UserPanelContent user={mainUser} friends={friends} />
       </UserPanel>
       <FriendList>
         {friends.length > 0 &&
@@ -159,9 +159,8 @@ const Messenger = () => {
                   key={chatroom.id}
                   chatroomId={chatroom.id}
                   photoURL={friend.photoURL}
-                  chatroomName={friend.displayName}
-                  friend={friend}
-                  user={mainUser}
+                  chatroomName={chatroom.data.chatroomName}
+                  attendants={chatroom.data.users}
                 />
               )
             })
