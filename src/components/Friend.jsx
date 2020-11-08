@@ -7,6 +7,7 @@ import { db } from 'firebaseSetting'
 import { Avatar } from './shared/Avatar'
 import { join } from 'redux/chatroom/chatroomRedux'
 import { login } from 'redux/user/userRedux'
+import { hashFromString } from 'utils/hash'
 
 const FriendContainer = styled.div`
   display: flex;
@@ -24,28 +25,21 @@ const Friend = ({ photoURL, name, friend, user }) => {
   const dispatch = useDispatch()
 
   const addChatRoom = async () => {
-    const querySnapshot = await db.collection('chatrooms').get()
-    let users = []
-    querySnapshot.forEach((doc) => users.push(doc.data()))
-
-    const isChatroomExist = users.some(
-      (chatroomUsers) =>
-        isEqual(chatroomUsers.users, [friend, user]) ||
-        isEqual(chatroomUsers.users, [user, friend])
-    )
-
-    if (isChatroomExist) return
-
-    const chatroomDocRef = await db.collection('chatrooms').add(
-      {
-        users: [friend, user],
-      },
-      { merge: true }
-    )
+    const chatroomId = hashFromString(`${friend.uid}${user.uid}`)
+    console.log('chatroomId', chatroomId)
+    db.collection('chatrooms')
+      .doc(`${chatroomId}`)
+      .set(
+        {
+          chatroomName: friend.displayName,
+          users: [friend, user],
+        },
+        { merge: true }
+      )
 
     dispatch(
       join({
-        chatroomId: chatroomDocRef.id,
+        chatroomId: `${chatroomId}`,
         users: [friend, user],
         chatroomName: friend.displayName,
         photoURL: friend.photoURL,
@@ -57,8 +51,8 @@ const Friend = ({ photoURL, name, friend, user }) => {
       .set(
         {
           chatrooms: userDoc.data().chatrooms
-            ? [...userDoc.data().chatrooms, chatroomDocRef.id]
-            : [chatroomDocRef.id],
+            ? [...userDoc.data().chatrooms, chatroomId]
+            : [chatroomId],
         },
         { merge: true }
       )
@@ -69,8 +63,8 @@ const Friend = ({ photoURL, name, friend, user }) => {
       .set(
         {
           chatrooms: friendDoc.data().chatrooms
-            ? [...friendDoc.data().chatrooms, chatroomDocRef.id]
-            : [chatroomDocRef.id],
+            ? [...friendDoc.data().chatrooms, chatroomId]
+            : [chatroomId],
         },
         { merge: true }
       )

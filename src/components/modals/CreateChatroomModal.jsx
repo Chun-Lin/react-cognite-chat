@@ -7,6 +7,7 @@ import Input from 'components/shared/Input'
 import Selector from 'components/shared/Selector'
 import { db } from 'firebaseSetting'
 import { join } from 'redux/chatroom/chatroomRedux'
+import { hashFromString } from 'utils/hash'
 
 const CreateChatRoomModalContainer = styled.div`
   width: 40vw;
@@ -87,24 +88,33 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
 
   const dispatch = useDispatch()
 
-  const createChatroom = async () => {
+  const createChatroom = () => {
     const attendedFriends = friends.filter((friend) =>
       selectedFriends.find(
         (selectedFriend) => friend.uid === selectedFriend.value
       )
     )
 
-    const chatroomDocRef = await db.collection('chatrooms').add(
-      {
-        chatroomName: inputValue,
-        users: [...attendedFriends, user],
-      },
-      { merge: true }
-    )
+    const stringToHash = [...attendedFriends, user]
+      .reduce((acc, curr) => {
+        return (acc += curr.uid)
+      }, '')
+      .concat(`${inputValue}`)
+    const chatroomId = hashFromString(stringToHash)
+
+    db.collection('chatrooms')
+      .doc(`${chatroomId}`)
+      .set(
+        {
+          chatroomName: inputValue,
+          users: [...attendedFriends, user],
+        },
+        { merge: true }
+      )
 
     dispatch(
       join({
-        chatroomId: chatroomDocRef.id,
+        chatroomId: `${chatroomId}`,
         users: [...attendedFriends, user],
         chatroomName: inputValue,
         photoURL: attendedFriends[0].photoURL,
