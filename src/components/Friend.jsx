@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
-import isEqual from 'lodash.isequal'
 
 import { db } from 'firebaseSetting'
 import { Avatar } from './shared/Avatar'
 import { join } from 'redux/chatroom/chatroomRedux'
-import { login } from 'redux/user/userRedux'
 import { hashFromString } from 'utils/hash'
 
 const FriendContainer = styled.div`
@@ -51,30 +49,6 @@ const Friend = ({ photoURL, name, friend, user }) => {
         photoURL: friend.photoURL,
       })
     )
-
-    // const userDoc = await db.collection('users').doc(user.uid).get()
-    // db.collection('users')
-    //   .doc(user.uid)
-    //   .set(
-    //     {
-    //       chatrooms: userDoc.data().chatrooms
-    //         ? [...userDoc.data().chatrooms, chatroomId]
-    //         : [chatroomId],
-    //     },
-    //     { merge: true }
-    //   )
-
-    // const friendDoc = await db.collection('users').doc(friend.uid).get()
-    // db.collection('users')
-    //   .doc(friend.uid)
-    //   .set(
-    //     {
-    //       chatrooms: friendDoc.data().chatrooms
-    //         ? [...friendDoc.data().chatrooms, chatroomId]
-    //         : [chatroomId],
-    //     },
-    //     { merge: true }
-    //   )
   }
 
   return (
