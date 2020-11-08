@@ -28,7 +28,6 @@ function App() {
             uid,
             photoURL,
             email,
-            status: 'online',
           },
           { merge: true }
         )

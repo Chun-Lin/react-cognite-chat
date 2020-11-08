@@ -64,6 +64,7 @@ const MessageInputContainer = styled.div`
 
 const Messenger = () => {
   const mainUser = useSelector(selectUser)
+  console.log(mainUser)
   const selectedChatroom = useSelector(selectChatroom)
   const [friends, setFriends] = useState([])
   const [chatrooms, setChatrooms] = useState([])
@@ -83,10 +84,9 @@ const Messenger = () => {
 
   useEffect(() => {
     db.collection('chatrooms')
-      // TODO: filter the chatroom don't belong to the user
-      // .where('users', 'array-contains', {
-      //   ...mainUser,
-      // })
+      .where('users', 'array-contains', {
+        ...mainUser,
+      })
       .onSnapshot((querySnapshot) => {
         let chatroomsAll = []
         querySnapshot.forEach((doc) =>

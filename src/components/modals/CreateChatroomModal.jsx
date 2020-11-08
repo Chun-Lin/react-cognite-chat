@@ -96,6 +96,7 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
     )
 
     const stringToHash = [...attendedFriends, user]
+      .sort((a, b) => a.uid.localeCompare(b.uid))
       .reduce((acc, curr) => {
         return (acc += curr.uid)
       }, '')

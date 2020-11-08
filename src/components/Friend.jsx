@@ -25,8 +25,14 @@ const Friend = ({ photoURL, name, friend, user }) => {
   const dispatch = useDispatch()
 
   const addChatRoom = async () => {
-    const chatroomId = hashFromString(`${friend.uid}${user.uid}`)
-    console.log('chatroomId', chatroomId)
+    const stringToHash = [friend, user]
+      .sort((a, b) => a.uid.localeCompare(b.uid))
+      .reduce((acc, curr) => {
+        return (acc += curr.uid)
+      }, '')
+
+    const chatroomId = hashFromString(stringToHash)
+
     db.collection('chatrooms')
       .doc(`${chatroomId}`)
       .set(
@@ -45,29 +51,30 @@ const Friend = ({ photoURL, name, friend, user }) => {
         photoURL: friend.photoURL,
       })
     )
-    const userDoc = await db.collection('users').doc(user.uid).get()
-    db.collection('users')
-      .doc(user.uid)
-      .set(
-        {
-          chatrooms: userDoc.data().chatrooms
-            ? [...userDoc.data().chatrooms, chatroomId]
-            : [chatroomId],
-        },
-        { merge: true }
-      )
 
-    const friendDoc = await db.collection('users').doc(friend.uid).get()
-    db.collection('users')
-      .doc(friend.uid)
-      .set(
-        {
-          chatrooms: friendDoc.data().chatrooms
-            ? [...friendDoc.data().chatrooms, chatroomId]
-            : [chatroomId],
-        },
-        { merge: true }
-      )
+    // const userDoc = await db.collection('users').doc(user.uid).get()
+    // db.collection('users')
+    //   .doc(user.uid)
+    //   .set(
+    //     {
+    //       chatrooms: userDoc.data().chatrooms
+    //         ? [...userDoc.data().chatrooms, chatroomId]
+    //         : [chatroomId],
+    //     },
+    //     { merge: true }
+    //   )
+
+    // const friendDoc = await db.collection('users').doc(friend.uid).get()
+    // db.collection('users')
+    //   .doc(friend.uid)
+    //   .set(
+    //     {
+    //       chatrooms: friendDoc.data().chatrooms
+    //         ? [...friendDoc.data().chatrooms, chatroomId]
+    //         : [chatroomId],
+    //     },
+    //     { merge: true }
+    //   )
   }
 
   return (
