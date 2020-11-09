@@ -97,22 +97,22 @@ const Messenger = () => {
   }, [selectedChatroom, mainUser])
 
   useEffect(() => {
-    if (selectedChatroom) {
-      db.collection('chatrooms')
-        .doc(selectedChatroom.chatroomId)
-        .collection('messages')
-        .orderBy('timestamp', 'asc')
-        .onSnapshot(
-          (querySnapshot) => {
-            let messagesAll = []
-            querySnapshot.forEach((doc) =>
-              messagesAll.push({ id: doc.id, data: doc.data() })
-            )
-            setMessages([...messagesAll])
-          },
-          (err) => console.log(err)
-        )
-    }
+    if (!selectedChatroom) return
+
+    db.collection('chatrooms')
+      .doc(selectedChatroom.chatroomId)
+      .collection('messages')
+      .orderBy('timestamp', 'asc')
+      .onSnapshot(
+        (querySnapshot) => {
+          let messagesAll = []
+          querySnapshot.forEach((doc) =>
+            messagesAll.push({ id: doc.id, data: doc.data() })
+          )
+          setMessages([...messagesAll])
+        },
+        (err) => console.log(err)
+      )
   }, [selectedChatroom])
 
   const onChangeHandler = (e) => {
@@ -120,18 +120,29 @@ const Messenger = () => {
     setInput(e.target.value)
   }
 
-  const sendButtonClickHandler = (e, mainUser) => {
-    if (selectedChatroom) {
-      db.collection('chatrooms')
-        .doc(selectedChatroom.chatroomId)
-        .collection('messages')
-        .add({
-          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-          message: input,
-          sender: mainUser,
-        })
-    }
+  const sendMessage = (mainUser) => {
+    return db
+      .collection('chatrooms')
+      .doc(selectedChatroom.chatroomId)
+      .collection('messages')
+      .add({
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        message: input,
+        sender: mainUser,
+      })
+  }
 
+  const onKeyDownHandler = (e, mainUser) => {
+    if (!selectedChatroom) return
+    if (e.key === 'Enter') {
+      sendMessage(mainUser)
+      setInput('')
+    }
+  }
+
+  const sendButtonClickHandler = (e, mainUser) => {
+    if (!selectedChatroom) return
+    sendMessage(mainUser)
     setInput('')
   }
 
@@ -195,6 +206,7 @@ const Messenger = () => {
           width="100%"
           height="30px"
           onChange={onChangeHandler}
+          onKeyDown={(e) => onKeyDownHandler(e, mainUser)}
           value={input}
         />
         <Button
