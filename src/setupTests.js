@@ -4,3 +4,18 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect'
 import 'jest-styled-components'
+
+jest.mock('firebase/app', () => {
+  const initializeApp = jest.fn().mockReturnValue({})
+
+  const auth = jest.fn().mockReturnValue({
+    signInWithRedirect: jest.fn(),
+    signInWithPopup: jest.fn(),
+    onAuthStateChanged: jest.fn(),
+  })
+
+  const firestore = jest.fn().mockReturnValue({})
+  auth.GoogleAuthProvider = jest.fn()
+
+  return { auth, initializeApp, firestore }
+})

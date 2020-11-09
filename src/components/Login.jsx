@@ -15,7 +15,7 @@ const LoginPageContainer = styled.div`
 
 const Login = () => {
   const signIn = () => {
-    auth.signInWithPopup(provider).catch((err) => alert(err.message))
+    auth.signInWithRedirect(provider)
   }
 
   return (
@@ -34,7 +34,7 @@ const Login = () => {
         borderRadius="100px"
         onClick={signIn}
       >
-        Login
+        Login with Google
       </Button>
     </LoginPageContainer>
   )
