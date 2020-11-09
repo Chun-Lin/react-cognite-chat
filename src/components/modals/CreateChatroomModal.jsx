@@ -135,6 +135,7 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
             height="30px"
             onChange={inputChangeHandler}
             value={inputValue}
+            placeholder="Please input chatroom name"
           />
         </Label>
         <Label htmlFor="members">
