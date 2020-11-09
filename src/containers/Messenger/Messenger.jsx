@@ -64,7 +64,6 @@ const MessageInputContainer = styled.div`
 
 const Messenger = () => {
   const mainUser = useSelector(selectUser)
-  console.log(mainUser)
   const selectedChatroom = useSelector(selectChatroom)
   const [friends, setFriends] = useState([])
   const [chatrooms, setChatrooms] = useState([])
@@ -102,7 +101,7 @@ const Messenger = () => {
       db.collection('chatrooms')
         .doc(selectedChatroom.chatroomId)
         .collection('messages')
-        .orderBy('timestamp', 'desc')
+        .orderBy('timestamp', 'asc')
         .onSnapshot(
           (querySnapshot) => {
             let messagesAll = []
@@ -177,12 +176,15 @@ const Messenger = () => {
       <Chatroom>
         {messages.length > 0
           ? messages.map((message) => {
+              console.log('LOG: Messenger -> message', message)
+
               return (
                 <Message
                   key={message.id}
                   message={message.data.message}
                   timeStamp={message.data.timestamp}
                   photoURL={message.data.sender?.photoURL}
+                  senderMsg={message.data.sender.uid === mainUser.uid}
                 />
               )
             })

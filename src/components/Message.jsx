@@ -5,10 +5,12 @@ import { Avatar } from './shared/Avatar'
 const MessageContainer = styled.div`
   width: fit-content;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
-  margin: 15px;
+  margin: 10px;
+  margin-right: ${(props) => (props.senderMsg ? '' : 'auto')};
+  margin-left: ${(props) => (props.senderMsg ? 'auto' : '')};
 
   p {
     padding: 15px;
@@ -23,11 +25,15 @@ const MessageContainer = styled.div`
     right: 0;
     bottom: -5px;
   }
+
+  img {
+    order: ${(props) => (props.senderMsg ? 1 : 0)};
+  }
 `
 
-const Message = ({ message, timeStamp, photoURL }) => {
+const Message = ({ message, timeStamp, photoURL, senderMsg }) => {
   return (
-    <MessageContainer>
+    <MessageContainer senderMsg={senderMsg}>
       <Avatar
         src={photoURL}
         alt=""
