@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/macro'
 
 import Friend from 'components/Friend'
@@ -132,6 +132,15 @@ const Messenger = () => {
       })
   }
 
+  const scrollToBottom = useCallback(() => {
+    chatroomBottomRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end',
+    })
+  }, [])
+
+  useEffect(scrollToBottom, [messages, scrollToBottom])
+
   const onKeyDownHandler = (e, mainUser) => {
     if (!selectedChatroom) return
     if (e.key === 'Enter') {
@@ -145,6 +154,8 @@ const Messenger = () => {
     sendMessage(mainUser)
     setInput('')
   }
+
+  const chatroomBottomRef = useRef(null)
 
   return (
     <MessngerContainter>
@@ -187,8 +198,6 @@ const Messenger = () => {
       <Chatroom>
         {messages.length > 0
           ? messages.map((message) => {
-              console.log('LOG: Messenger -> message', message)
-
               return (
                 <Message
                   key={message.id}
@@ -200,6 +209,7 @@ const Messenger = () => {
               )
             })
           : null}
+        <div ref={chatroomBottomRef} />
       </Chatroom>
       <MessageInputContainer>
         <Input
