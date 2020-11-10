@@ -23,7 +23,6 @@ const DobleAvatarContainer = styled.div`
       position: absolute;
       top: 0;
       left: ${props => props.width / 3}px;
-      margin-right: -10px;
       border-radius: 999px;
     }
   }
