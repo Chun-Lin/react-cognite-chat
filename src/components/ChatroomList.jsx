@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 
@@ -27,7 +27,7 @@ const DialogWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin-left: 10px;
+  margin: 0 10px;
 `
 
 const ChatroomName = styled.h3`
@@ -36,6 +36,7 @@ const ChatroomName = styled.h3`
 `
 
 const LastestMsg = styled.p`
+  text-align: left;
   padding: 0;
   margin: 0;
 `
@@ -56,22 +57,24 @@ const ChatroomList = ({ photoURLs, chatroomId, chatroomName, attendants }) => {
     )
   }
 
-  const queryChatroomMsgAsc = db
-    .collection('chatrooms')
-    .doc(chatroomId)
-    .collection('messages')
-    .orderBy('timestamp', 'asc')
+  useEffect(() => {
+    const queryChatroomMsgAsc = db
+      .collection('chatrooms')
+      .doc(chatroomId)
+      .collection('messages')
+      .orderBy('timestamp', 'asc')
 
-  queryChatroomMsgAsc.onSnapshot(
-    querySnapshot => {
-      let messagesAll = []
-      querySnapshot.forEach(doc =>
-        messagesAll.push({ id: doc.id, data: doc.data() })
-      )
-      setLastestMessage(messagesAll[messagesAll.length - 1]?.data.message)
-    },
-    err => console.log(err)
-  )
+    queryChatroomMsgAsc.onSnapshot(
+      querySnapshot => {
+        let messagesAll = []
+        querySnapshot.forEach(doc =>
+          messagesAll.push({ id: doc.id, data: doc.data() })
+        )
+        setLastestMessage(messagesAll[messagesAll.length - 1]?.data.message)
+      },
+      err => console.log(err)
+    )
+  }, [chatroomId])
 
   return (
     <ListContainer onClick={selectedChatRoom}>

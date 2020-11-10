@@ -9,12 +9,13 @@ const MessageContainer = styled.div`
   align-items: center;
   position: relative;
   margin: 10px;
-  margin-right: ${(props) => (props.senderMsg ? '' : 'auto')};
-  margin-left: ${(props) => (props.senderMsg ? 'auto' : '')};
+  margin-right: ${props => (props.senderMsg ? '' : 'auto')};
+  margin-left: ${props => (props.senderMsg ? 'auto' : '')};
 
   p {
     padding: 15px;
     margin: 10px;
+    text-align: ${props => (props.senderMsg ? 'right' : 'left')};
     border-radius: 20px;
     background-color: #f3f3f3;
   }
@@ -27,7 +28,7 @@ const MessageContainer = styled.div`
   }
 
   img {
-    order: ${(props) => (props.senderMsg ? 1 : 0)};
+    order: ${props => (props.senderMsg ? 1 : 0)};
   }
 `
 
