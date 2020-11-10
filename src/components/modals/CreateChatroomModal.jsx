@@ -95,6 +95,8 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
       )
     )
 
+    const chatroomPhotoURLs = attendedFriends.map(friend => friend.photoURL)
+
     const stringToHash = [...attendedFriends, user]
       .sort((a, b) => a.uid.localeCompare(b.uid))
       .reduce((acc, curr) => {
@@ -118,7 +120,7 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
         chatroomId: `${chatroomId}`,
         users: [...attendedFriends, user],
         chatroomName: inputValue,
-        photoURL: attendedFriends[0].photoURL,
+        photoURLs: chatroomPhotoURLs,
       })
     )
   }
@@ -143,7 +145,7 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
           <Selector
             name="members"
             isMulti
-            placeHolder="Select at least 2 friends"
+            placeholder="Select at least 2 friends"
             options={friendSelectorOptions}
             onChange={option => selectorChangeHandler(option)}
           />

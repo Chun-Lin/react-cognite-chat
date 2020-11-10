@@ -16,7 +16,13 @@ const styles = {
 
 const Selector = ({ isMulti, options, onChange, ...rest }) => {
   return (
-    <Select isMulti={isMulti} options={options} styles={styles} {...rest} />
+    <Select
+      isMulti={isMulti}
+      options={options}
+      onChange={onChange}
+      styles={styles}
+      {...rest}
+    />
   )
 }
 
