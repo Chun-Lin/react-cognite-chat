@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -45,10 +46,17 @@ const Message = ({ message, timeStamp, photoURL, senderMsg }) => {
       />
       <p>{message}</p>
       <small>
-        {timeStamp ? new Date(timeStamp.toDate()).toLocaleString() : null}
+        {timeStamp ? new Date(timeStamp?.toDate()).toLocaleString() : null}
       </small>
     </MessageContainer>
   )
+}
+
+Message.propTypes = {
+  message: PropTypes.string,
+  photoURL: PropTypes.string,
+  senderMsg: PropTypes.bool,
+  timeStamp: PropTypes.object,
 }
 
 export default Message
