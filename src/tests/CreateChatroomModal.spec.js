@@ -1,7 +1,6 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 
-import { auth } from 'firebaseSetting'
 import { render } from 'test-utils'
 
 import CreateChatroomModal from 'components/modals/CreateChatroomModal'

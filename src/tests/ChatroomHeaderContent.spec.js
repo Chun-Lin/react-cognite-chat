@@ -1,5 +1,4 @@
 import React from 'react'
-import userEvent from '@testing-library/user-event'
 
 import { render } from 'test-utils'
 
@@ -9,7 +8,9 @@ describe('<ChatroomHeaderContent /> Unit Tests', () => {
   it('should show avatar and friend name', async () => {
     const { findByText, getByRole } = render(
       <ChatroomHeaderContent
-        photoURL="https://s3.amazonaws.com/uifaces/faces/twitter/rahmeen/128.jpg"
+        photoURLs={[
+          'https://s3.amazonaws.com/uifaces/faces/twitter/rahmeen/128.jpg',
+        ]}
         chatroomName="Gary Wu"
       />
     )

@@ -1,8 +1,4 @@
 import React from 'react'
-import userEvent from '@testing-library/user-event'
-import { auth, provider, db } from 'firebaseSetting'
-import 'firebase/auth'
-import 'firebase/firestore'
 
 import { render } from 'test-utils'
 
@@ -39,16 +35,4 @@ describe('<Friend /> Unit Tests', () => {
     expect(avatarNode).toHaveAttribute('width', '40px')
     expect(avatarNode).toHaveAttribute('height', '40px')
   })
-
-  // it('should manipulate firestore db when click avatar', () => {
-  //   const { findByText, getByRole, debug } = render(
-  //     <Friend friend={mockFriend} user={mockUser} />
-  //   )
-
-  //   const avatarNode = getByRole('img')
-
-  //   userEvent.click(avatarNode)
-  //   console.log('db', db.collection)
-  //   expect(db.collection).toHaveBeenCalled()
-  // })
 })
