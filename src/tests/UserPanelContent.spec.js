@@ -30,11 +30,10 @@ const mockUser = {
 }
 
 test('should show <CreateChatroomModal /> correctly', async () => {
-  const { findByText, findByRole, debug } = render(
+  const { findByText, findByRole } = render(
     <UserPanelContent user={mockUser} friends={mockFriends} />
   )
 
-  debug()
   expect(await findByText(/Cognite Chat/i)).toBeInTheDocument()
   expect(await findByRole('img')).toHaveAttribute(
     'src',

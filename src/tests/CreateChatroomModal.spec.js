@@ -32,7 +32,7 @@ const mockUser = {
 
 test('should show <CreateChatroomModal /> correctly', async () => {
   const onClose = jest.fn()
-  const { findByText, getByPlaceholderText, debug } = render(
+  const { findByText, getByPlaceholderText } = render(
     <CreateChatroomModal
       onClose={onClose}
       friends={mockFriends}
@@ -45,8 +45,6 @@ test('should show <CreateChatroomModal /> correctly', async () => {
   const inputNode = getByPlaceholderText('Please input chatroom name')
   userEvent.type(inputNode, 'room1')
   expect(inputNode).toHaveValue('room1')
-
-  debug()
 
   const cancelBtn = await findByText(/Cancel/i)
   userEvent.click(cancelBtn)

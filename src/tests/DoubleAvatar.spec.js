@@ -4,7 +4,7 @@ import DoubleAvatar from 'components/shared/DoubleAvatar'
 import { render } from 'test-utils'
 
 test('show correct avatar photos and orders of avatar photos', () => {
-  const { getAllByRole, debug } = render(
+  const { getAllByRole } = render(
     <DoubleAvatar
       width={30}
       height={30}
@@ -14,8 +14,6 @@ test('show correct avatar photos and orders of avatar photos', () => {
       ]}
     />
   )
-
-  debug()
 
   const avatarNodes = getAllByRole('img')
 
