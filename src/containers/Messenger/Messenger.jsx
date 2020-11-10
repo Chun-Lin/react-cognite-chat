@@ -152,6 +152,7 @@ const Messenger = () => {
                   photoURLs={photoURLs}
                   chatroomName={chatroom.data.chatroomName}
                   attendants={chatroom.data.users}
+                  user={mainUser}
                 />
               )
             })

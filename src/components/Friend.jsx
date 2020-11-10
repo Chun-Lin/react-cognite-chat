@@ -31,11 +31,14 @@ const Friend = ({ photoURL, name, friend, user }) => {
 
     const chatroomId = hashFromString(stringToHash)
 
+    const chatroomName = [friend, user].filter(item => item.uid !== user.uid)[0]
+      .displayName
+
     db.collection('chatrooms')
       .doc(`${chatroomId}`)
       .set(
         {
-          chatroomName: friend.displayName,
+          chatroomName: chatroomName,
           users: [friend, user],
         },
         { merge: true }
@@ -45,8 +48,8 @@ const Friend = ({ photoURL, name, friend, user }) => {
       join({
         chatroomId: `${chatroomId}`,
         users: [friend, user],
-        chatroomName: friend.displayName,
-        photoURL: friend.photoURL,
+        chatroomName: chatroomName,
+        photoURLs: [friend.photoURL],
       })
     )
   }

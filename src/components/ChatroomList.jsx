@@ -41,7 +41,13 @@ const LastestMsg = styled.p`
   margin: 0;
 `
 
-const ChatroomList = ({ photoURLs, chatroomId, chatroomName, attendants }) => {
+const ChatroomList = ({
+  photoURLs,
+  chatroomId,
+  chatroomName,
+  attendants,
+  user,
+}) => {
   const [lastestMessage, setLastestMessage] = useState('')
 
   const dispatch = useDispatch()
@@ -76,6 +82,14 @@ const ChatroomList = ({ photoURLs, chatroomId, chatroomName, attendants }) => {
     )
   }, [chatroomId])
 
+  const chosseChatroomName = () => {
+    if (attendants.length === 2) {
+      return attendants.filter(item => item.uid !== user.uid)[0].displayName
+    } else {
+      return chatroomName
+    }
+  }
+
   return (
     <ListContainer onClick={selectedChatRoom}>
       {photoURLs.length === 1 ? (
@@ -95,7 +109,7 @@ const ChatroomList = ({ photoURLs, chatroomId, chatroomName, attendants }) => {
       )}
 
       <DialogWrapper>
-        <ChatroomName>{chatroomName}</ChatroomName>
+        <ChatroomName>{chosseChatroomName()}</ChatroomName>
         <LastestMsg>{lastestMessage}</LastestMsg>
       </DialogWrapper>
     </ListContainer>
