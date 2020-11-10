@@ -4,14 +4,13 @@ import styled from 'styled-components/macro'
 import Friend from 'components/Friend'
 import ChatroomList from 'components/ChatroomList'
 import ChatroomHeaderContent from 'components/ChatroomHeaderContent'
-import Input from 'components/shared/Input'
 import Message from 'components/Message'
-import { Button } from 'components/shared/Button'
 import { useSelector } from 'react-redux'
 import { selectUser } from 'redux/user/userRedux'
-import firebase, { db } from 'firebaseSetting'
+import { db } from 'firebaseSetting'
 import { selectChatroom } from 'redux/chatroom/chatroomRedux'
 import UserPanelContent from 'components/UserPanelContent'
+import MessageInput from 'components/MessageInput'
 
 const MessngerContainter = styled.div`
   display: grid;
@@ -67,7 +66,6 @@ const Messenger = () => {
   const selectedChatroom = useSelector(selectChatroom)
   const [friends, setFriends] = useState([])
   const [chatrooms, setChatrooms] = useState([])
-  const [input, setInput] = useState('')
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
@@ -115,45 +113,11 @@ const Messenger = () => {
       )
   }, [selectedChatroom])
 
-  const onChangeHandler = (e) => {
-    e.preventDefault()
-    setInput(e.target.value)
-  }
-
-  const sendMessage = (mainUser) => {
-    return db
-      .collection('chatrooms')
-      .doc(selectedChatroom.chatroomId)
-      .collection('messages')
-      .add({
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        message: input,
-        sender: mainUser,
-      })
-  }
-
   const scrollToBottom = useCallback(() => {
-    chatroomBottomRef.current.scrollIntoView({
-      behavior: 'smooth',
-      block: 'end',
-    })
+    chatroomBottomRef.current.scrollIntoView()
   }, [])
 
   useEffect(scrollToBottom, [messages, scrollToBottom])
-
-  const onKeyDownHandler = (e, mainUser) => {
-    if (!selectedChatroom) return
-    if (e.key === 'Enter') {
-      sendMessage(mainUser)
-      setInput('')
-    }
-  }
-
-  const sendButtonClickHandler = (e, mainUser) => {
-    if (!selectedChatroom) return
-    sendMessage(mainUser)
-    setInput('')
-  }
 
   const chatroomBottomRef = useRef(null)
 
@@ -212,24 +176,7 @@ const Messenger = () => {
         <div ref={chatroomBottomRef} />
       </Chatroom>
       <MessageInputContainer>
-        <Input
-          width="100%"
-          height="30px"
-          onChange={onChangeHandler}
-          onKeyDown={(e) => onKeyDownHandler(e, mainUser)}
-          value={input}
-        />
-        <Button
-          width="60px"
-          height="30px"
-          margin="0 0 0 10px"
-          borderRadius="20px"
-          border="none"
-          backgroundColor="orange"
-          onClick={(e) => sendButtonClickHandler(e, mainUser)}
-        >
-          Send
-        </Button>
+        <MessageInput selectedChatroom={selectedChatroom} user={mainUser} />
       </MessageInputContainer>
     </MessngerContainter>
   )
