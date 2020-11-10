@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 
-import { Button } from 'components/shared/Button'
+import Button from 'components/shared/Button'
 import Input from 'components/shared/Input'
 import Selector from 'components/shared/Selector'
 import { db } from 'firebaseSetting'
@@ -70,28 +70,28 @@ const Label = styled.label`
 `
 
 const CreateChatroomModal = ({ onClose, friends, user }) => {
-  const [selectedFriends, setSelectedFriendss] = useState()
+  const [selectedFriends, setSelectedFriends] = useState()
   const [inputValue, setInputValue] = useState()
 
-  const selectorChangeHandler = (option) => {
-    setSelectedFriendss(option)
+  const selectorChangeHandler = option => {
+    setSelectedFriends(option)
   }
 
-  const friendSelectorOptions = friends.map((friend) => ({
+  const friendSelectorOptions = friends.map(friend => ({
     value: friend.uid,
     label: friend.displayName,
   }))
 
-  const inputChangeHandler = (e) => {
+  const inputChangeHandler = e => {
     setInputValue(e.target.value)
   }
 
   const dispatch = useDispatch()
 
   const createChatroom = () => {
-    const attendedFriends = friends.filter((friend) =>
+    const attendedFriends = friends.filter(friend =>
       selectedFriends.find(
-        (selectedFriend) => friend.uid === selectedFriend.value
+        selectedFriend => friend.uid === selectedFriend.value
       )
     )
 
@@ -145,7 +145,7 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
             isMulti
             placeHolder="Select at least 2 friends"
             options={friendSelectorOptions}
-            onChange={(option) => selectorChangeHandler(option)}
+            onChange={option => selectorChangeHandler(option)}
           />
         </Label>
       </ModalContent>

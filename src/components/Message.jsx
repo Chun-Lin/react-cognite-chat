@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Avatar } from './shared/Avatar'
+
+import Avatar from 'components/shared/Avatar'
 
 const MessageContainer = styled.div`
   width: fit-content;

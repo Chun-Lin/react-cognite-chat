@@ -1,8 +1,8 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
 const DobleAvatarContainer = styled.div`
-  /* display: flex; */
   position: relative;
   width: ${props => props.width}px;
   height: ${props => props.height}px;
@@ -36,6 +36,12 @@ const DoubleAvatar = ({ photoURLs, width, height }) => {
       <img src={photoURLs[1]} alt="avatar2" />
     </DobleAvatarContainer>
   )
+}
+
+DoubleAvatar.propTypes = {
+  width: PropTypes.number,
+  height: PropTypes.number,
+  photoURLs: PropTypes.arrayOf(PropTypes.string),
 }
 
 export default DoubleAvatar

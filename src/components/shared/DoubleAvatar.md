@@ -1,0 +1,10 @@
+```jsx
+<DoubleAvatar
+  photoURLs={[
+    'https://s3.amazonaws.com/uifaces/faces/twitter/al_li/128.jpg',
+    'https://s3.amazonaws.com/uifaces/faces/twitter/holdenweb/128.jpg',
+  ]}
+  width={50}
+  height={50}
+/>
+```

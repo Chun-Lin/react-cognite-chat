@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Avatar } from './shared/Avatar'
-import DoubleAvatar from './shared/DoubleAvatar'
+import Avatar from 'components/shared/Avatar'
+import DoubleAvatar from 'components/shared/DoubleAvatar'
 
 const HeaderContainer = styled.div`
   height: 100%;

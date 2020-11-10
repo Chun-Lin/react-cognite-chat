@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import { BiMessageSquareAdd } from 'react-icons/bi'
 
-import { Avatar } from './shared/Avatar'
+import Avatar from 'components/shared/Avatar'
 import { useModal } from 'hooks/useModal'
 import LogoutModal from './modals/LogoutModal'
 import CreateChatroomModal from './modals/CreateChatroomModal'

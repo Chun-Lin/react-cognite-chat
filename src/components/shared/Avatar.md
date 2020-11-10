@@ -1,0 +1,9 @@
+```jsx
+<Avatar
+  src="https://s3.amazonaws.com/uifaces/faces/twitter/al_li/128.jpg"
+  width="50px"
+  height="50px"
+  borderRadius="100px"
+  alt="avatar"
+/>
+```

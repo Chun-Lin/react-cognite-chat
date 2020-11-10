@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 import { db } from 'firebaseSetting'
 import { join } from 'redux/chatroom/chatroomRedux'
-import { Avatar } from './shared/Avatar'
-import DoubleAvatar from './shared/DoubleAvatar'
+import Avatar from 'components/shared/Avatar'
+import DoubleAvatar from 'components/shared/DoubleAvatar'
 
 const ListContainer = styled.div`
   width: 100%;

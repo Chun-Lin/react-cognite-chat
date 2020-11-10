@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 
 import { db } from 'firebaseSetting'
-import { Avatar } from './shared/Avatar'
+import Avatar from 'components/shared/Avatar'
 import { join } from 'redux/chatroom/chatroomRedux'
 import { hashFromString } from 'utils/hash'
 

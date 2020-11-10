@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { Button } from 'components/shared/Button'
+import Button from 'components/shared/Button'
 import { auth } from 'firebaseSetting'
 import { useDispatch } from 'react-redux'
 import { logout } from 'redux/user/userRedux'

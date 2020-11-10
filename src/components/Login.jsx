@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { auth, provider } from 'firebaseSetting'
-import { Button } from 'components/shared/Button'
+import Button from 'components/shared/Button'
 
 const LoginPageContainer = styled.div`
   width: 100vw;

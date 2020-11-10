@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 import { sendMessage } from 'api'
-import { Button } from './shared/Button'
-import Input from './shared/Input'
+import Button from 'components/shared/Button'
+import Input from 'components/shared/Input'
 
 const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
   const [inputValue, setInputValue] = useState('')
 
-  const onChangeHandler = (e) => {
+  const onChangeHandler = e => {
     e.preventDefault()
     setInputValue(e.target.value)
   }
@@ -32,7 +32,7 @@ const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
         width="100%"
         height="30px"
         onChange={onChangeHandler}
-        onKeyDown={(e) => onKeyDownHandler(e, user)}
+        onKeyDown={e => onKeyDownHandler(e, user)}
         value={inputValue}
       />
       <Button
@@ -42,7 +42,7 @@ const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
         borderRadius="20px"
         border="none"
         backgroundColor="orange"
-        onClick={(e) => sendButtonClickHandler(e, user)}
+        onClick={e => sendButtonClickHandler(e, user)}
       >
         Send
       </Button>
