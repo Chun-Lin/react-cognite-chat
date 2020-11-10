@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Avatar } from './shared/Avatar'
+import DoubleAvatar from './shared/DoubleAvatar'
 
 const HeaderContainer = styled.div`
   height: 100%;
@@ -16,16 +17,25 @@ const ChatroomName = styled.h3`
   margin-left: 10px;
 `
 
-const ChatroomHeaderContent = ({ photoURL, chatroomName }) => {
+const ChatroomHeaderContent = ({ photoURLs, chatroomName }) => {
   return (
     <HeaderContainer>
-      <Avatar
-        src={photoURL}
-        alt=""
-        width="30px"
-        height="30px"
-        borderRadius="100px"
-      />
+      {photoURLs.length === 1 ? (
+        <Avatar
+          src={photoURLs[0]}
+          alt=""
+          width="30px"
+          height="30px"
+          borderRadius="100px"
+        />
+      ) : (
+        <DoubleAvatar
+          photoURLs={photoURLs.slice(0, 2)}
+          width={40}
+          height={40}
+        />
+      )}
+
       <ChatroomName>{chatroomName}</ChatroomName>
     </HeaderContainer>
   )

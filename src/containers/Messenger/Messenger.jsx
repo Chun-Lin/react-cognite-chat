@@ -69,48 +69,52 @@ const Messenger = () => {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    db.collection('users')
-      .where('uid', '!=', mainUser.uid)
-      .onSnapshot((querySnapshot) => {
-        let friendsAll = []
-        querySnapshot.forEach((doc) => friendsAll.push(doc.data()))
+    const queryFriends = db.collection('users').where('uid', '!=', mainUser.uid)
 
-        setFriends([...friendsAll])
-      })
+    queryFriends.onSnapshot(querySnapshot => {
+      let friendsAll = []
+      querySnapshot.forEach(doc => friendsAll.push(doc.data()))
+
+      setFriends([...friendsAll])
+    })
   }, [mainUser.uid])
 
   useEffect(() => {
-    db.collection('chatrooms')
+    const queryUserChatrooms = db
+      .collection('chatrooms')
       .where('users', 'array-contains', {
         ...mainUser,
       })
-      .onSnapshot((querySnapshot) => {
-        let chatroomsAll = []
-        querySnapshot.forEach((doc) =>
-          chatroomsAll.push({ id: doc.id, data: doc.data() })
-        )
 
-        setChatrooms([...chatroomsAll])
-      })
+    queryUserChatrooms.onSnapshot(querySnapshot => {
+      let chatroomsAll = []
+      querySnapshot.forEach(doc =>
+        chatroomsAll.push({ id: doc.id, data: doc.data() })
+      )
+
+      setChatrooms([...chatroomsAll])
+    })
   }, [selectedChatroom, mainUser])
 
   useEffect(() => {
     if (!selectedChatroom) return
 
-    db.collection('chatrooms')
+    const queryChatroomMsgAsc = db
+      .collection('chatrooms')
       .doc(selectedChatroom.chatroomId)
       .collection('messages')
       .orderBy('timestamp', 'asc')
-      .onSnapshot(
-        (querySnapshot) => {
-          let messagesAll = []
-          querySnapshot.forEach((doc) =>
-            messagesAll.push({ id: doc.id, data: doc.data() })
-          )
-          setMessages([...messagesAll])
-        },
-        (err) => console.log(err)
-      )
+
+    queryChatroomMsgAsc.onSnapshot(
+      querySnapshot => {
+        let messagesAll = []
+        querySnapshot.forEach(doc =>
+          messagesAll.push({ id: doc.id, data: doc.data() })
+        )
+        setMessages([...messagesAll])
+      },
+      err => console.log(err)
+    )
   }, [selectedChatroom])
 
   const scrollToBottom = useCallback(() => {
@@ -128,22 +132,24 @@ const Messenger = () => {
       </UserPanel>
       <FriendList>
         {friends.length > 0 &&
-          friends.map((friend) => (
+          friends.map(friend => (
             <Friend key={friend.uid} friend={friend} user={mainUser} />
           ))}
       </FriendList>
       <ChatroomListContainer>
         {chatrooms.length > 0
-          ? chatrooms.map((chatroom) => {
-              const friend = chatroom.data.users.filter(
-                (user) => user.uid !== mainUser.uid
-              )[0]
+          ? chatrooms.map(chatroom => {
+              const friends = chatroom.data.users.filter(
+                user => user.uid !== mainUser.uid
+              )
+
+              const photoURLs = friends.map(friend => friend.photoURL)
 
               return (
                 <ChatroomList
                   key={chatroom.id}
                   chatroomId={chatroom.id}
-                  photoURL={friend.photoURL}
+                  photoURLs={photoURLs}
                   chatroomName={chatroom.data.chatroomName}
                   attendants={chatroom.data.users}
                 />
@@ -154,14 +160,14 @@ const Messenger = () => {
       <ChatroomHeader>
         {selectedChatroom ? (
           <ChatroomHeaderContent
-            photoURL={selectedChatroom.photoURL}
+            photoURLs={selectedChatroom.photoURLs}
             chatroomName={selectedChatroom.chatroomName}
           />
         ) : null}
       </ChatroomHeader>
       <Chatroom>
         {messages.length > 0
-          ? messages.map((message) => {
+          ? messages.map(message => {
               return (
                 <Message
                   key={message.id}
@@ -176,7 +182,9 @@ const Messenger = () => {
         <div ref={chatroomBottomRef} />
       </Chatroom>
       <MessageInputContainer>
-        <MessageInput selectedChatroom={selectedChatroom} user={mainUser} />
+        {selectedChatroom ? (
+          <MessageInput selectedChatroom={selectedChatroom} user={mainUser} />
+        ) : null}
       </MessageInputContainer>
     </MessngerContainter>
   )
