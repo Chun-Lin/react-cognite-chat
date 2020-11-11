@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
@@ -82,12 +83,12 @@ const ChatroomList = ({
     )
   }, [chatroomId])
 
-  const chosseChatroomName = () => {
-    if (attendants.length === 2) {
-      return attendants.filter(item => item.uid !== user.uid)[0].displayName
-    } else {
-      return chatroomName
-    }
+  const chooseChatroomName = () => {
+    const friendChatroomName = attendants.filter(
+      item => item.uid !== user.uid
+    )[0].displayName
+
+    return attendants.length === 2 ? friendChatroomName : chatroomName
   }
 
   return (
@@ -109,11 +110,19 @@ const ChatroomList = ({
       )}
 
       <DialogWrapper>
-        <ChatroomName>{chosseChatroomName()}</ChatroomName>
+        <ChatroomName>{chooseChatroomName()}</ChatroomName>
         <LastestMsg>{lastestMessage}</LastestMsg>
       </DialogWrapper>
     </ListContainer>
   )
+}
+
+ChatroomList.propTypes = {
+  attendants: PropTypes.arrayOf(PropTypes.object),
+  chatroomId: PropTypes.string,
+  chatroomName: PropTypes.string,
+  photoURLs: PropTypes.arrayOf(PropTypes.string),
+  user: PropTypes.object,
 }
 
 export default ChatroomList
