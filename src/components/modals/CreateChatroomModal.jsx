@@ -54,9 +54,10 @@ const ModalButton = styled(Button)`
   margin-left: 10px;
   border-radius: 100px;
   border: none;
+  cursor: ${props => (props.disabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
-    background-color: orange;
+    background-color: ${props => (props.disabled ? '' : 'orange')};
   }
 `
 

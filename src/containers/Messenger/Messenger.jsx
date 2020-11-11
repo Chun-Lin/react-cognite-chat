@@ -118,7 +118,7 @@ const Messenger = () => {
   }, [selectedChatroom])
 
   const scrollToBottom = useCallback(() => {
-    chatroomBottomRef.current.scrollIntoView()
+    chatroomBottomRef.current.scrollIntoView({ behavior: 'smooth' })
   }, [])
 
   useEffect(scrollToBottom, [messages, scrollToBottom])
