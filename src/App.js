@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, lazy, Suspense } from 'react'
 
 import './App.css'
-import Messenger from 'containers/Messenger/Messenger'
 import Login from 'components/Login'
 import { auth, db } from 'firebaseSetting'
 import { login, logout, selectUser } from 'redux/user/userRedux'
 import { useDispatch, useSelector } from 'react-redux'
+
+const Messenger = lazy(() => import('containers/Messenger/Messenger'))
 
 function App() {
   const dispatch = useDispatch()
@@ -37,7 +38,17 @@ function App() {
     })
   }, [dispatch])
 
-  return <div className="App">{user ? <Messenger /> : <Login />}</div>
+  return (
+    <div className="App">
+      {user ? (
+        <Suspense fallback={<div></div>}>
+          <Messenger />
+        </Suspense>
+      ) : (
+        <Login />
+      )}
+    </div>
+  )
 }
 
 export default App

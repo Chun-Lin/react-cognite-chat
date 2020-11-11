@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import styled from 'styled-components/macro'
 import { BiMessageSquareAdd } from 'react-icons/bi'
 
 import Avatar from 'components/shared/Avatar'
 import { useModal } from 'hooks/useModal'
-import LogoutModal from './modals/LogoutModal'
-import CreateChatroomModal from './modals/CreateChatroomModal'
+
+const LogoutModal = lazy(() => import('./modals/LogoutModal'))
+const CreateChatroomModal = lazy(() => import('./modals/CreateChatroomModal'))
 
 const UserPanelContentContainer = styled.div`
   height: 100%;
@@ -59,13 +60,19 @@ const UserPanelContent = ({ user, friends }) => {
         `}
         onClick={showCreateChatroomModal}
       />
-      {renderLogoutModal(<LogoutModal onClose={closeLogoutModal} />)}
+      {renderLogoutModal(
+        <Suspense fallback={<div></div>}>
+          <LogoutModal onClose={closeLogoutModal} />
+        </Suspense>
+      )}
       {renderCreateChatroomModal(
-        <CreateChatroomModal
-          onClose={closeCreateChatroomModal}
-          friends={friends}
-          user={user}
-        />
+        <Suspense fallback={<div></div>}>
+          <CreateChatroomModal
+            onClose={closeCreateChatroomModal}
+            friends={friends}
+            user={user}
+          />
+        </Suspense>
       )}
     </UserPanelContentContainer>
   )
