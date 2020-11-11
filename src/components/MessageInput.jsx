@@ -42,7 +42,7 @@ const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
         margin="0 0 0 10px"
         borderRadius="20px"
         border="none"
-        backgroundColor="orange"
+        backgroundColor="#FF6918"
         onClick={e => sendButtonClickHandler(e, user)}
       >
         Send

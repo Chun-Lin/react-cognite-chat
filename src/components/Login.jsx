@@ -29,7 +29,7 @@ const Login = () => {
       <Button
         width="50%"
         height="30px"
-        backgroundColor="#ff6918"
+        backgroundColor="#FF6918"
         border="none"
         borderRadius="100px"
         onClick={signIn}

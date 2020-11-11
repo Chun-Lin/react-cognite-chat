@@ -41,7 +41,7 @@ const ModalButton = styled(Button)`
   border: none;
 
   &:hover {
-    background-color: orange;
+    background-color: #ff6918;
   }
 `
 

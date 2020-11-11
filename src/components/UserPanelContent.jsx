@@ -14,7 +14,7 @@ const UserPanelContentContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #faf3ee;
+  /* background-color: #faf3ee; */
 
   h1 {
     padding: 0;

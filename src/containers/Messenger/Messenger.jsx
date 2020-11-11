@@ -26,25 +26,26 @@ const MessngerContainter = styled.div`
 
 const UserPanel = styled.div`
   grid-area: user-panel;
+  background-color: #fbfbf2;
 `
 
 const FriendList = styled.div`
   grid-area: friend-list;
   display: flex;
   overflow: auto;
-  background-color: #faf3ee;
+  background-color: #fbfbf2;
 `
 
 const ChatroomListContainer = styled.div`
   grid-area: chatroom-list;
   padding: 10px 5px 0 5px;
   overflow: auto;
-  background-color: #faf3ee;
+  background-color: #fbfbf2;
 `
 
 const ChatroomHeader = styled.div`
   grid-area: chatroom-header;
-  background-color: #f3f3f3;
+  background-color: #e5e6e4;
 `
 
 const Chatroom = styled.div`
@@ -57,7 +58,7 @@ const MessageInputContainer = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #f3f3f3;
+  background-color: #e5e6e4;
   padding: 0 20px;
 `
 
