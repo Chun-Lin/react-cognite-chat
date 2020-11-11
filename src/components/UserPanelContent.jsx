@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components/macro'
 import { BiMessageSquareAdd } from 'react-icons/bi'
@@ -68,6 +69,11 @@ const UserPanelContent = ({ user, friends }) => {
       )}
     </UserPanelContentContainer>
   )
+}
+
+UserPanelContent.propTypes = {
+  friends: PropTypes.arrayOf(PropTypes.object),
+  user: PropTypes.object,
 }
 
 export default UserPanelContent

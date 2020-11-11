@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -39,6 +40,11 @@ const ChatroomHeaderContent = ({ photoURLs, chatroomName }) => {
       <ChatroomName>{chatroomName}</ChatroomName>
     </HeaderContainer>
   )
+}
+
+ChatroomHeaderContent.propTypes = {
+  chatroomName: PropTypes.string,
+  photoURLs: PropTypes.arrayOf(PropTypes.string),
 }
 
 export default ChatroomHeaderContent

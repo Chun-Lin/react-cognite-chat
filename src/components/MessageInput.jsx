@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 
 import { sendMessage } from 'api'
@@ -48,6 +49,11 @@ const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
       </Button>
     </>
   )
+}
+
+MessageInput.propTypes = {
+  selectedChatroom: PropTypes.object,
+  user: PropTypes.object,
 }
 
 export default MessageInput

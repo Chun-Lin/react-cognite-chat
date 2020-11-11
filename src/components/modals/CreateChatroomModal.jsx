@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
@@ -165,6 +166,12 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
       </ModalFooter>
     </CreateChatRoomModalContainer>
   )
+}
+
+CreateChatroomModal.propTypes = {
+  friends: PropTypes.arrayOf(PropTypes.object),
+  onClose: PropTypes.func,
+  user: PropTypes.object,
 }
 
 export default CreateChatroomModal

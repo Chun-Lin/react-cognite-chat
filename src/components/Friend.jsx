@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
@@ -19,7 +20,7 @@ const FriendContainer = styled.div`
   }
 `
 
-const Friend = ({ photoURL, name, friend, user }) => {
+const Friend = ({ friend, user }) => {
   const dispatch = useDispatch()
 
   const addChatRoom = async () => {
@@ -66,6 +67,11 @@ const Friend = ({ photoURL, name, friend, user }) => {
       <span>{friend.displayName}</span>
     </FriendContainer>
   )
+}
+
+Friend.propTypes = {
+  photoURL: PropTypes.arrayOf(PropTypes.string),
+  user: PropTypes.object,
 }
 
 export default Friend

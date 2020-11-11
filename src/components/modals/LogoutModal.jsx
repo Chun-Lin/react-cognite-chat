@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -64,6 +65,10 @@ const LogoutModal = ({ onClose }) => {
       </ButtonContainer>
     </ModalContainer>
   )
+}
+
+LogoutModal.propTypes = {
+  onClose: PropTypes.func,
 }
 
 export default LogoutModal
