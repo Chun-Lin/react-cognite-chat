@@ -39,8 +39,8 @@ test('should show <CreateChatroomModal /> correctly', async () => {
       user={mockUser}
     />
   )
-  expect(await findByText(/Chatroom Name/i)).toBeInTheDocument()
-  expect(await findByText(/Choose Members/i)).toBeInTheDocument()
+  expect(await findByText(/Name/i)).toBeInTheDocument()
+  expect(await findByText(/Members/i)).toBeInTheDocument()
 
   const inputNode = getByPlaceholderText('Please input chatroom name')
   userEvent.type(inputNode, 'room1')

@@ -64,11 +64,15 @@ const ModalButton = styled(Button)`
 const Label = styled.label`
   width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  font-size: 16px;
+`
 
-  span {
-    margin-right: 10px;
-  }
+const LabelTitle = styled.span`
+  display: block;
+  width: 100px;
+  margin-right: 10px;
 `
 
 const CreateChatroomModal = ({ onClose, friends, user }) => {
@@ -132,9 +136,8 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
       <ModalHeader>Create a Chatroom</ModalHeader>
       <ModalContent>
         <Label htmlFor="chatroom">
-          <span>Chatroom Name:</span>
+          <LabelTitle id="chatroom">Name:</LabelTitle>
           <Input
-            name="chatroom"
             width="100%"
             height="30px"
             onChange={inputChangeHandler}
@@ -143,9 +146,8 @@ const CreateChatroomModal = ({ onClose, friends, user }) => {
           />
         </Label>
         <Label htmlFor="members">
-          <span>Choose Members:</span>
+          <LabelTitle id="members">Members:</LabelTitle>
           <Selector
-            name="members"
             isMulti
             placeholder="Select at least 2 friends"
             options={friendSelectorOptions}
