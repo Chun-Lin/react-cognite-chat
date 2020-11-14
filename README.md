@@ -14,6 +14,12 @@ $ yarn build
 # All files were built in the `build` folder
 ```
 
+## Run Tests
+```bash
+$ yarn build
+# Run all tests in the `__tests__` folder
+```
+
 ## Styleguidist
 >Styleguidist will help you explore the usage of shared components
 ```bash
@@ -29,23 +35,21 @@ $ yarn run styleguide
 
 ## Set up list
 
-
 - [x] styling
   - [x] normalize.css
-  - [x] styled-components
-- [x] prettier
-- [x] redux
-  - [x] redux-toolkit
+  - [x] styled-components (can easily inject props to modify CSS properties)
+- [x] prettier (formatting codes)
+- [x] redux (global state managemenet)
+  - [x] redux-toolkit (easily writing redux codes without cumbersome boilerplate codes)
 - [x] testing
-  - [x] react-testing-library
-  - [x] testing-library/jest-dom/extend-expect
-  - [x] setupTest.js settings
-  - [x] jest-styled-components
+  - [x] react-testing-library (can easily get component node to test)
+  - [x] testing-library/jest-dom/extend-expect 
+  - [x] jest-styled-components (to have more assertions of styled-components)
 - [x] CI
-  - [x] Firebase build-deploy yml setting
+  - [x] Firebase build-deploy yml setting (automatically deploy the app when pushing a new commit)
 
 
-## Improvement
+## Improvements
 
 - Lazy loading messagese in chatrooms
 - Add an API middleware layer between database and client-side to make the codebase cleaner
