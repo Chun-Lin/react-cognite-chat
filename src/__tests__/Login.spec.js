@@ -1,15 +1,12 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
-import { auth, provider } from 'firebaseSetting'
-import 'firebase/auth'
-import 'firebase/firestore'
 
+import { auth, provider } from 'firebaseSetting'
 import { render } from 'test-utils'
 import Login from 'components/Login'
 import App from 'App'
 
 describe('Test whether the display page is login page or messenger page', () => {
-  // firebase.auth.mockImplementation(() => new firebase.auth.Auth())
   it('should display login page and called relevant signin apis', async () => {
     const { findByText } = render(<Login />)
 

@@ -15,21 +15,7 @@ jest.mock('firebase/app', () => {
     signOut: jest.fn(),
   })
 
-  // firestore mocks somehow doesn't work
-  const firestore = jest.fn().mockReturnValue({
-    collection: jest.fn().mockReturnValue({
-      doc: jest.fn().mockReturnValue({
-        add: jest.fn(),
-        onSnapshot: jest.fn(),
-        get: jest.fn(),
-        set: jest.fn(),
-      }),
-      where: jest.fn().mockReturnValue({
-        get: jest.fn(),
-        onSnapshot: jest.fn(),
-      }),
-    }),
-  })
+  const firestore = jest.fn()
 
   auth.GoogleAuthProvider = jest.fn()
 
