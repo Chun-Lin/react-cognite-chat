@@ -20,6 +20,7 @@ const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
     cacheMessage[0]?.message
       ? setInputValue(cacheMessage[0]?.message)
       : setInputValue('')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatroomId])
 
   const onChangeHandler = e => {
