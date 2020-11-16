@@ -1,16 +1,31 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { sendMessage } from 'api'
 import Button from 'components/shared/Button'
 import Input from 'components/shared/Input'
+import { saveMessage, cacheMessages } from 'redux/chatroom/chatroomRedux'
 
 const MessageInput = ({ selectedChatroom: { chatroomId }, user }) => {
+  const dispatch = useDispatch()
+  const messages = useSelector(cacheMessages)
   const [inputValue, setInputValue] = useState('')
+
+  useEffect(() => {
+    const cacheMessage = messages.filter(
+      messageItem => messageItem.chatroomId === chatroomId
+    )
+
+    cacheMessage[0]?.message
+      ? setInputValue(cacheMessage[0]?.message)
+      : setInputValue('')
+  }, [chatroomId])
 
   const onChangeHandler = e => {
     e.preventDefault()
     setInputValue(e.target.value)
+    dispatch(saveMessage({ chatroomId, message: e.target.value }))
   }
 
   const onKeyDownHandler = (e, user) => {
